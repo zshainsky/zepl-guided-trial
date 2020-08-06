@@ -1,0 +1,543 @@
+{
+  "paragraphs": [
+    {
+      "title": "",
+      "text": "%md\n# How to write a Pandas DataFrame to Snowflake using Zepl\u0027s Snowflake Data Source\n1. Pandas DataFrame Documentation: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html\n2. Snowflake PUT / COPY Documentation: https://docs.snowflake.com/en/user-guide/python-connector-example.html#loading-data\n3. Snowflake INSERT Documentation: https://docs.snowflake.com/en/sql-reference/sql/insert.html#multi-row-insert-using-explicitly-specified-values",
+      "user": "",
+      "dateUpdated": "2020-05-17 20:20:07.000",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "selectedInterpreter": {
+          "name": "md",
+          "profile": "md",
+          "isCustom": false,
+          "editorLanguage": "markdown",
+          "className": "org.apache.zeppelin.markdown.Markdown",
+          "isDefault": false
+        },
+        "colWidth": 12.0,
+        "editorHide": true,
+        "results": [
+          {}
+        ]
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch1\u003eHow to write a Pandas DataFrame to Snowflake using Zepl\u0026rsquo;s Snowflake Data Source\u003c/h1\u003e\n\u003col\u003e\n  \u003cli\u003ePandas DataFrame Documentation: \u003ca href\u003d\"https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html\"\u003ehttps://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html\u003c/a\u003e\u003c/li\u003e\n  \u003cli\u003eSnowflake PUT / COPY Documentation: \u003ca href\u003d\"https://docs.snowflake.com/en/user-guide/python-connector-example.html#loading-data\"\u003ehttps://docs.snowflake.com/en/user-guide/python-connector-example.html#loading-data\u003c/a\u003e\u003c/li\u003e\n  \u003cli\u003eSnowflake INSERT Documentation: \u003ca href\u003d\"https://docs.snowflake.com/en/sql-reference/sql/insert.html#multi-row-insert-using-explicitly-specified-values\"\u003ehttps://docs.snowflake.com/en/sql-reference/sql/insert.html#multi-row-insert-using-explicitly-specified-values\u003c/a\u003e\u003c/li\u003e\n\u003c/ol\u003e\n\u003c/div\u003e",
+            "type": "HTML"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "",
+      "id": "20200514-012517_643745232",
+      "dateCreated": "2020-05-14 01:25:17.000",
+      "dateStarted": "2020-05-17 20:20:07.817",
+      "dateFinished": "2020-05-17 20:20:07.823",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 0
+    },
+    {
+      "title": "Connect to Snowflake Data Source",
+      "text": "%python\ncur \u003d z.getDatasource(\"CRMData\")",
+      "user": "",
+      "dateUpdated": "2020-05-17 20:19:12.000",
+      "config": {
+        "selectedInterpreter": {
+          "name": "python",
+          "profile": "python",
+          "isCustom": false,
+          "editorLanguage": "python",
+          "className": "org.apache.zeppelin.python.PythonInterpreter",
+          "isDefault": true
+        },
+        "colWidth": 6.0,
+        "title": true,
+        "results": [
+          {}
+        ],
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        }
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "",
+      "id": "20200513-232457_1246863230",
+      "dateCreated": "2020-05-13 23:24:57.000",
+      "dateStarted": "2020-05-14 01:19:42.764",
+      "dateFinished": "2020-05-14 01:19:42.819",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 0
+    },
+    {
+      "title": "Query data and store in Pandas DataFrame",
+      "text": "%python\nimport pandas as pd\n\nres2 \u003d cur.execute(\u0027select * from PROSPECTS LIMIT 100\u0027)\n\ndf \u003d pd.DataFrame(res2)\ndf.columns \u003d [col[0] for col in cur.description] ",
+      "user": "",
+      "dateUpdated": "2020-05-14 00:36:28.000",
+      "config": {
+        "selectedInterpreter": {
+          "name": "python",
+          "profile": "python",
+          "isCustom": false,
+          "editorLanguage": "python",
+          "className": "org.apache.zeppelin.python.PythonInterpreter",
+          "isDefault": true
+        },
+        "colWidth": 6.0,
+        "title": true,
+        "results": [
+          {}
+        ],
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        }
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "",
+      "id": "20200513-233020_942717736",
+      "dateCreated": "2020-05-13 23:30:20.000",
+      "dateStarted": "2020-05-14 00:36:28.105",
+      "dateFinished": "2020-05-14 00:36:28.637",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 0
+    },
+    {
+      "title": "Recommended for larger data sets",
+      "text": "%python\n\n# Create an empty table with same columns as PROSPECTS table\ncur.execute(\"CREATE TABLE IF NOT EXISTS TEMP_TABLE like PROSPECTS;\")\n\n# DF to CSV\ndf.to_csv(\"temp.csv\", sep\u003d\u0027,\u0027, encoding\u003d\u0027utf-8\u0027,index\u003dFalse)\n\n# Write CSV file to Snowflake\ncur.execute(\"PUT file://temp.csv @%TEMP_TABLE;\")\ncur.execute(\"COPY INTO TEMP_TABLE FROM  @%TEMP_TABLE FILE_FORMAT\u003d(type\u003dcsv field_delimiter\u003d\u0027,\u0027, skip_header\u003d1) PURGE\u003dTRUE ON_ERROR\u003dCONTINUE;COPY INTO TEMP_TABLE FROM  @%TEMP_TABLE FILE_FORMAT\u003d(type\u003dcsv field_delimiter\u003d\u0027,\u0027, skip_header\u003d1) PURGE\u003dTRUE ON_ERROR\u003dCONTINUE;\")",
+      "user": "",
+      "dateUpdated": "2020-05-17 21:21:17.000",
+      "config": {
+        "selectedInterpreter": {
+          "name": "python",
+          "profile": "python",
+          "isCustom": false,
+          "editorLanguage": "python",
+          "className": "org.apache.zeppelin.python.PythonInterpreter",
+          "isDefault": true
+        },
+        "colWidth": 12.0,
+        "title": true,
+        "results": [
+          {}
+        ],
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        }
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "data": "\u003csnowflake.connector.cursor.SnowflakeCursor at 0x7f914d284d50\u003e",
+            "type": "TEXT"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "",
+      "id": "20200513-155102_1796303495",
+      "dateCreated": "2020-05-13 15:51:02.000",
+      "dateStarted": "2020-05-14 00:36:32.389",
+      "dateFinished": "2020-05-14 00:36:34.952",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 0
+    },
+    {
+      "title": "",
+      "text": "%md\n### Note on using Pandas DataFrame `.to_sql()`\n\u003e Writing a dataframe to snowflake can be done through [df.to_sql()](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_sql.html#pandas.DataFrame.to_sql). This method is fully supported by Zepl, however, you will not be able to leverage our secure Snowflake data source connector. Our data source connector returns a `snowflake.connector.connection.SnowflakeConnection` object, which differs from the connection object required by the `.to_sql()` function: `sqlalchemy.engine.Engine` or `sqlite3.Connection`.",
+      "user": "",
+      "dateUpdated": "2020-05-14 01:25:10.000",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "selectedInterpreter": {
+          "name": "md",
+          "profile": "md",
+          "isCustom": false,
+          "editorLanguage": "markdown",
+          "className": "org.apache.zeppelin.markdown.Markdown",
+          "isDefault": false
+        },
+        "colWidth": 12.0,
+        "editorHide": true,
+        "results": [
+          {}
+        ]
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch3\u003eNote on using Pandas DataFrame \u003ccode\u003e.to_sql()\u003c/code\u003e\u003c/h3\u003e\n\u003cblockquote\u003e\n  \u003cp\u003eWriting a dataframe to snowflake can be done through \u003ca href\u003d\"https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_sql.html#pandas.DataFrame.to_sql\"\u003edf.to_sql()\u003c/a\u003e. This method is fully supported by Zepl, however, you will not be able to leverage our secure Snowflake data source connector. Our data source connector returns a \u003ccode\u003esnowflake.connector.connection.SnowflakeConnection\u003c/code\u003e object, which differs from the connection object required by the \u003ccode\u003e.to_sql()\u003c/code\u003e function: \u003ccode\u003esqlalchemy.engine.Engine\u003c/code\u003e or \u003ccode\u003esqlite3.Connection\u003c/code\u003e.\u003c/p\u003e\n\u003c/blockquote\u003e\n\u003c/div\u003e",
+            "type": "HTML"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "",
+      "id": "20200514-003427_902371985",
+      "dateCreated": "2020-05-14 00:34:27.000",
+      "dateStarted": "2020-05-14 01:25:10.165",
+      "dateFinished": "2020-05-14 01:25:10.169",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 0
+    },
+    {
+      "title": "",
+      "text": "%md\n# How to write a Spark DataFrame to Snowflake using Zepl\u0027s Snowflake Data Source",
+      "user": "",
+      "dateUpdated": "2020-05-17 20:20:02.000",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "selectedInterpreter": {
+          "name": "md",
+          "profile": "md",
+          "isCustom": false,
+          "editorLanguage": "markdown",
+          "className": "org.apache.zeppelin.markdown.Markdown",
+          "isDefault": false
+        },
+        "colWidth": 12.0,
+        "editorHide": true,
+        "results": []
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch1\u003eHow to write a Spark DataFrame to Snowflake using Zepl\u0026rsquo;s Snowflake Data Source\u003c/h1\u003e\n\u003c/div\u003e",
+            "type": "HTML"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "",
+      "id": "20200517-201935_532470227",
+      "dateCreated": "2020-05-17 20:19:35.000",
+      "dateStarted": "2020-05-17 20:20:02.449",
+      "dateFinished": "2020-05-17 20:20:02.453",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 0
+    },
+    {
+      "title": "Connect to Snowflake, Query data, Store Spark DataFrame in a Temp Table",
+      "text": "%spark\n\n// var sfOptions \u003d Map(\n//     \"sfDatabase\" -\u003e \"SHAINSKY_DB\",\n//     \"sfSchema\" -\u003e \"CRM\",\n//     \"sfWarehouse\" -\u003e \"SHAINSKY_WH\"\n// )\n\n// SparkSQL options to read...\nval df_reader \u003d z.getDatasource(\"CRMData\")\n        .asInstanceOf[org.apache.spark.sql.DataFrameReader]\n        \nval df \u003d df_reader\n        .option(\"query\", \"SELECT * FROM PROSPECTS LIMIT 10\")\n        .load()\n\ndf.registerTempTable(\"pass_to_pyspark\")\ndf.show()",
+      "user": "",
+      "dateUpdated": "2020-06-02 17:02:53.000",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        },
+        "selectedInterpreter": {
+          "name": "spark",
+          "profile": "spark",
+          "isCustom": false,
+          "editorLanguage": "scala",
+          "className": "org.apache.zeppelin.spark.SparkInterpreter",
+          "isDefault": false
+        },
+        "colWidth": 12.0,
+        "title": true,
+        "results": [
+          {}
+        ]
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "data": "warning: there was one deprecation warning; re-run with -deprecation for details\n+-------+----------+--------------------+-----------------+--------------------+---------------+\n|  FRIST|      LAST|               EMAIL|           DOMAIN|             COMPANY|          CRMID|\n+-------+----------+--------------------+-----------------+--------------------+---------------+\n|  FIRST|      LAST|               EMAIL|           DOMAIN|             COMPANY|          CRMID|\n| Marsha|Sensabaugh|marsha.sensabaugh...|       wordzx.com|wordZXpressed Tra...|00Q2YlB3H2ahUAC|\n|  Robby|    Cauley|robby.cauley@treo...|   treoonline.com|    TREO Engineering|00Q2YwC3H1klUAC|\n|Gustavo|    Luzier|gustavo.luzier@re...|      results.net|      RE/MAX Results|00Q2YjPKR5zgUAD|\n|  Homer|      Down|homer.down@albion...|       albion.edu|      Albion College|00Q2YgW3H2NjUAK|\n|  Eulah|     Bliss|eulah.bliss@grupo...|  grupo-exito.com|         Grupo Exito|00Q2YqG5iqYTUAY|\n| Venita|      Gard|venita.gard@harop...|  haropaports.com|Port Autonome De ...|00Q2YwC231RJUAY|\n|Carolin|   Burcham|carolin.burcham@t...|transformauto.com|Transform Automotive|00Q2YtZ3H1lbUAC|\n| Jessia|  Spangler|jessia.spangler@h...|      harbert.net|Harbert Managemen...|00Q2YzPEqMwsUAF|\n|  Emmie| Langhorne|emmie.langhorne@h...|      hoarllc.com|Hoar Construction...|00Q2YbH3H1piUAC|\n+-------+----------+--------------------+-----------------+--------------------+---------------+\n\ndf_reader: org.apache.spark.sql.DataFrameReader \u003d org.apache.spark.sql.DataFrameReader@d4130b8\ndf: org.apache.spark.sql.DataFrame \u003d [FRIST: string, LAST: string ... 4 more fields]\n",
+            "type": "TEXT"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "",
+      "id": "20200515-162635_767417245",
+      "dateCreated": "2020-05-15 16:26:35.000",
+      "dateStarted": "2020-06-02 17:02:48.585",
+      "dateFinished": "2020-06-02 17:02:53.637",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 0
+    },
+    {
+      "title": "Write to Snowflake from CSV",
+      "text": "%spark.pyspark\npath \u003d \"/usr/zepl/interpreter/temp/\"\n\n# Connect to Datasource\ncur \u003d z.getDatasource(\"CRMData\")\n\n# Build SparkSQL Dataframe\ndf \u003d spark.sql(\"SELECT * FROM pass_to_pyspark\")\n\n# Write DataFrame to CSV on container filesystem\ndf.write.format(\"csv\").mode(\"overwrite\").save(path\u003dpath)",
+      "user": "",
+      "dateUpdated": "2020-06-02 17:03:00.000",
+      "config": {
+        "selectedInterpreter": {
+          "name": "spark.pyspark",
+          "profile": "pyspark",
+          "isCustom": false,
+          "editorLanguage": "python",
+          "className": "org.apache.zeppelin.spark.PySparkInterpreter",
+          "isDefault": false
+        },
+        "colWidth": 12.0,
+        "title": true,
+        "results": [
+          {},
+          {},
+          {},
+          {}
+        ],
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        }
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "",
+      "id": "20200515-162812_592918014",
+      "dateCreated": "2020-05-15 16:28:12.000",
+      "dateStarted": "2020-06-02 17:02:58.384",
+      "dateFinished": "2020-06-02 17:03:00.833",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 0
+    },
+    {
+      "title": "Function to get CSV file path",
+      "text": "%spark.pyspark\nimport subprocess\n\ndef getFileName(path):\n    # List files on path\n    result \u003d str(subprocess.run([\u0027ls\u0027, \u0027-l\u0027, path], capture_output\u003dTrue).stdout) \n    \n    # Split string at each space \u0027 \u0027\n    result \u003d result.split()\n\n    # Select the last value in the list (name of file)\n    result \u003d result[-1:][0]\n    \n    # Strip extra characters from stdout\n    result \u003d result[:-3]\n    \n    return result\n\nprint(getFileName(\u0027/usr/zepl/interpreter/temp/\u0027))",
+      "user": "",
+      "dateUpdated": "2020-06-02 17:03:03.000",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        },
+        "selectedInterpreter": {
+          "name": "spark.pyspark",
+          "profile": "pyspark",
+          "isCustom": false,
+          "editorLanguage": "python",
+          "className": "org.apache.zeppelin.spark.PySparkInterpreter",
+          "isDefault": false
+        },
+        "colWidth": 12.0,
+        "editorHide": false,
+        "title": true,
+        "results": [
+          {}
+        ]
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "data": "part-00000-34976721-a467-47da-b0e1-2b3e73aa96d5-c000.csv\n",
+            "type": "TEXT"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "",
+      "id": "20200517-212325_1127513956",
+      "dateCreated": "2020-05-17 21:23:25.000",
+      "dateStarted": "2020-06-02 17:03:03.014",
+      "dateFinished": "2020-06-02 17:03:03.257",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 0
+    },
+    {
+      "title": "Write CSV to Snowflake",
+      "text": "%spark.pyspark\n\n# Write CSV file to Snowflake\n# The file name is typically written with this convension and the name changes on every df.write(): part-00000-66ddf92b-0281-46ae-bcbf-1308ed82d2a7-c000.csv\n# See the getFileNmae(path) function defined inthe previous paragraph\n\n# cur.execute(\"PUT file:///user/zepl/interpreter/temp/part*\")\ncur.execute(\"PUT file:///usr/zepl/interpreter/temp/{} @%TEMP_TABLE;\".format(getFileName(path)))\ncur.execute(\"COPY INTO TEMP_TABLE FROM  @%TEMP_TABLE FILE_FORMAT\u003d(type\u003dcsv field_delimiter\u003d\u0027,\u0027, skip_header\u003d1) PURGE\u003dTRUE ON_ERROR\u003dCONTINUE;\")",
+      "user": "",
+      "dateUpdated": "2020-06-02 17:03:25.000",
+      "config": {
+        "selectedInterpreter": {
+          "name": "spark.pyspark",
+          "profile": "pyspark",
+          "isCustom": false,
+          "editorLanguage": "python",
+          "className": "org.apache.zeppelin.spark.PySparkInterpreter",
+          "isDefault": false
+        },
+        "colWidth": 12.0,
+        "title": true,
+        "results": [
+          {}
+        ],
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        }
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "data": "\u003csnowflake.connector.cursor.SnowflakeCursor at 0x7f5325364990\u003e",
+            "type": "TEXT"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "",
+      "id": "20200602-170040_334804593",
+      "dateCreated": "2020-06-02 17:00:40.000",
+      "dateStarted": "2020-06-02 17:03:05.790",
+      "dateFinished": "2020-06-02 17:03:08.860",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 0
+    },
+    {
+      "title": "*Note: Using Spark SQL DataFrameReader does not support PUT",
+      "text": "%spark\n\ndf.write.format(\"csv\").mode(\"overwrite\").save(path\u003d\"/temp.csv\")\n\ndf_reader.option(\"query\",\"PUT file:///temp.csv @%TEMP_TABLE;\") // Error: net.snowflake.client.jdbc.SnowflakeSQLException: SQL compilation error: syntax error line 1 at position 15 unexpected \u0027PUT\u0027\ndf_reader.option(\"query\",\"COPY INTO TEMP_TABLE FROM  @%TEMP_TABLE FILE_FORMAT\u003d(type\u003dcsv field_delimiter\u003d\u0027,\u0027, skip_header\u003d1) PURGE\u003dTRUE ON_ERROR\u003dCONTINUE;\") // Error: net.snowflake.client.jdbc.SnowflakeSQLException: SQL compilation error: syntax error line 1 at position 15 unexpected \u0027COPY\u0027\ndf_reader.load()",
+      "user": "",
+      "dateUpdated": "2020-06-16 20:17:20.000",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        },
+        "selectedInterpreter": {
+          "name": "spark",
+          "profile": "spark",
+          "isCustom": false,
+          "editorLanguage": "scala",
+          "className": "org.apache.zeppelin.spark.SparkInterpreter",
+          "isDefault": false
+        },
+        "colWidth": 12.0,
+        "title": true,
+        "results": [
+          {}
+        ]
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "data": "net.snowflake.client.jdbc.SnowflakeSQLException: SQL compilation error:\nsyntax error line 1 at position 15 unexpected \u0027COPY\u0027.\nsyntax error line 1 at position 109 unexpected \u0027\u003d\u0027.\n  at net.snowflake.client.jdbc.SnowflakeUtil.checkErrorAndThrowExceptionSub(SnowflakeUtil.java:152)\n  at net.snowflake.client.jdbc.SnowflakeUtil.checkErrorAndThrowException(SnowflakeUtil.java:77)\n  at net.snowflake.client.core.StmtUtil.pollForOutput(StmtUtil.java:495)\n  at net.snowflake.client.core.StmtUtil.execute(StmtUtil.java:372)\n  at net.snowflake.client.core.SFStatement.executeHelper(SFStatement.java:506)\n  at net.snowflake.client.core.SFStatement.executeQueryInternal(SFStatement.java:250)\n  at net.snowflake.client.core.SFStatement.executeQuery(SFStatement.java:188)\n  at net.snowflake.client.core.SFStatement.execute(SFStatement.java:797)\n  at net.snowflake.client.jdbc.SnowflakeStatementV1.executeQueryInternal(SnowflakeStatementV1.java:259)\n  at net.snowflake.client.jdbc.SnowflakePreparedStatementV1.executeQuery(SnowflakePreparedStatementV1.java:171)\n  at net.snowflake.spark.snowflake.JDBCWrapper$$anonfun$executePreparedQueryInterruptibly$1.apply(SnowflakeJDBCWrapper.scala:300)\n  at net.snowflake.spark.snowflake.JDBCWrapper$$anonfun$executePreparedQueryInterruptibly$1.apply(SnowflakeJDBCWrapper.scala:298)\n  at net.snowflake.spark.snowflake.JDBCWrapper$$anonfun$1.apply(SnowflakeJDBCWrapper.scala:335)\n  at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)\n  at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)\n  at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n  at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n  at java.lang.Thread.run(Thread.java:748)\n",
+            "type": "TEXT"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "",
+      "id": "20200517-203108_704270751",
+      "dateCreated": "2020-05-17 20:31:08.000",
+      "dateStarted": "2020-05-17 21:21:25.193",
+      "dateFinished": "2020-05-17 21:21:27.665",
+      "status": "ERROR",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 0
+    },
+    {
+      "title": "",
+      "text": "",
+      "user": "",
+      "dateUpdated": "2020-05-17 20:22:14.000",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "",
+      "id": "20200517-202214_1305838433",
+      "dateCreated": "2020-05-17 20:22:14.000",
+      "dateStarted": "2020-05-17 22:08:20.000",
+      "dateFinished": "2020-05-17 22:08:20.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 0
+    }
+  ],
+  "name": "Write to Snowflake",
+  "id": "7dd3ef09612f4347bdf0097790963669",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "looknfeel": "juno"
+  },
+  "info": {}
+}

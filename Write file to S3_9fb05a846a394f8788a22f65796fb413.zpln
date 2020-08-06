@@ -1,0 +1,108 @@
+{
+  "paragraphs": [
+    {
+      "title": "",
+      "text": "%md\n# Example of writing a file to S3 bucket through Zepl\u0027s Data Source\n1. [Bucket Reference](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#bucket)\n2. [pickle.dumps() Function](https://docs.python.org/3/library/pickle.html#pickle.dumps) \n3. [put_objec() Function](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.put_object)\n\n",
+      "user": "",
+      "dateUpdated": "2020-06-02 21:27:40.000",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "selectedInterpreter": {
+          "name": "md",
+          "profile": "md",
+          "isCustom": false,
+          "editorLanguage": "markdown",
+          "className": "org.apache.zeppelin.markdown.Markdown",
+          "isDefault": false
+        },
+        "colWidth": 12.0,
+        "editorHide": true,
+        "results": [
+          {}
+        ]
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch1\u003eExample of writing a file to S3 bucket through Zepl\u0026rsquo;s Data Source\u003c/h1\u003e\n\u003col\u003e\n  \u003cli\u003e\u003ca href\u003d\"https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#bucket\"\u003eBucket Reference\u003c/a\u003e\u003c/li\u003e\n  \u003cli\u003e\u003ca href\u003d\"https://docs.python.org/3/library/pickle.html#pickle.dumps\"\u003epickle.dumps() Function\u003c/a\u003e\u003c/li\u003e\n  \u003cli\u003e\u003ca href\u003d\"https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.put_object\"\u003eput_objec() Function\u003c/a\u003e\u003c/li\u003e\n\u003c/ol\u003e\n\u003c/div\u003e",
+            "type": "HTML"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "",
+      "id": "20200602-210646_1950456147",
+      "dateCreated": "2020-06-02 21:06:46.000",
+      "dateStarted": "2020-06-02 21:27:40.740",
+      "dateFinished": "2020-06-02 21:27:40.741",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 0
+    },
+    {
+      "title": "",
+      "text": "%python\n# Only needed for this example if uploading a pickle file\nimport pickle\n\n# Bucket Object\n# Connect to S3 Datasource - it assumes s3test is already a data connection to the specific s3 bucket.\ns3_object \u003d z.getDatasource(\"s3test\")\n\n\n# Create object to store in S3 (Serialize the object)\n# The \u0027classifier\u0027 variable is the python object (i.e. Pandas DataFrame) to be put in S3\nserializedListObject \u003d pickle.dumps(classifier)\n\n# put_object() Function writes to S3\ns3_object.put_object(Body\u003dserializedListObject, Key\u003d\u0027classifierm2.pkl\u0027)",
+      "user": "",
+      "dateUpdated": "2020-06-16 20:18:24.000",
+      "config": {
+        "selectedInterpreter": {
+          "name": "python",
+          "profile": "python",
+          "isCustom": false,
+          "editorLanguage": "python",
+          "className": "org.apache.zeppelin.python.PythonInterpreter",
+          "isDefault": true
+        },
+        "colWidth": 12.0,
+        "tableHide": true,
+        "results": [
+          {}
+        ],
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        }
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "data": "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m\n\u001b[0;31mDatasourceException\u001b[0m                       Traceback (most recent call last)\n\u001b[0;32m\u003cipython-input-2-3778f1e9bc49\u003e\u001b[0m in \u001b[0;36m\u003cmodule\u003e\u001b[0;34m\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0;31m# classifier is the python object / dataframe to be put in S3\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      5\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----\u003e 6\u001b[0;31m \u001b[0ms3_object\u001b[0m \u001b[0;34m\u003d\u001b[0m \u001b[0mz\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mgetDatasource\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"s3test\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      7\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      8\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\n\u001b[0;32m\u003cipython-input-1-fe6879f5a5f0\u003e\u001b[0m in \u001b[0;36mgetDatasource\u001b[0;34m(self, name)\u001b[0m\n\u001b[1;32m     70\u001b[0m   \u001b[0;32mdef\u001b[0m \u001b[0mgetDatasource\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mname\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     71\u001b[0m     \u001b[0;32mif\u001b[0m \u001b[0mname\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mdatasources\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---\u003e 72\u001b[0;31m       \u001b[0;32mraise\u001b[0m \u001b[0mDatasourceException\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"Datasource {} should be attached to the notebook.\"\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mformat\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mname\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     73\u001b[0m     \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mdatasources\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mname\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     74\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\n\u001b[0;31mDatasourceException\u001b[0m: Datasource s3test should be attached to the notebook.",
+            "type": "TEXT"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "",
+      "id": "20200514-013624_1716843400",
+      "dateCreated": "2020-05-14 01:36:24.000",
+      "dateStarted": "2020-05-14 01:37:44.901",
+      "dateFinished": "2020-05-14 01:37:47.710",
+      "status": "ERROR",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 0
+    }
+  ],
+  "name": "Write file to S3",
+  "id": "9fb05a846a394f8788a22f65796fb413",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "looknfeel": "default"
+  },
+  "info": {}
+}
